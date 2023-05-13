@@ -26,6 +26,7 @@ sudo chmod +x /usr/local/bin/nvcompcr.sh
 sudo cp nvmboot.service /etc/systemd/system
 sudo mkdir /var/log/mlog
 ```
+
 We generate the hashes in the resettable PCRs 16 and 23 (they are not always the same) 
 using the sha1 bank, 
 then we save them in a pcrs.bin file.
@@ -33,6 +34,7 @@ To do this we run the bash script nvMeasuredBoot.sh.
 ```
 sudo bash nvMeasuredBoot.sh
 ```
+
 Now we need to create the pcr policy for read and write in the area, then we
 define a NV area (index) and finaly write the secret in the area.
 ```
@@ -41,14 +43,17 @@ tpm2_nvdefine 0x01300000 -C o -P tfg  -L pcr.policy -a "policyread|policywrite"
 echo "Successful Boot" > secret
 tpm2_nvwrite 0x01300000 -C 0x01300000 -P pcr:sha1:16,23=pcrs.bin -i secret
 ```
+
 We make sure that the secret has been saved correctly.
 ```
 tpm2_nvread 0x01300000 -C 0x01300000 -P pcr:sha1:16,23 -s 768
 ```
+
 To remove the area we use `tpm2_nvundefine`.
 ```
 tpm2_nvundefine 0x01300000 -P tfg
 ```
+
 We leave it ready for the next boot, for that, we reset the PCRs and 
 delete the secret and the policy 
 (we must do this so as not to leave a trace of what our secret is).
@@ -80,6 +85,7 @@ Then we reboot the system and read the log file.
 sudo nano /boot/config.txt 
 sudo reboot
 ```
+
 If everything is correct, the log 
 file will be empty, that means some critical file has been modified.
 
