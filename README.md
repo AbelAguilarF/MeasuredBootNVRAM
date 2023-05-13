@@ -89,7 +89,6 @@ sudo reboot
 If everything is correct, the log 
 file will be empty, that means some critical file has been modified.
 
-
-
+## Things to keep in mind
 
 
