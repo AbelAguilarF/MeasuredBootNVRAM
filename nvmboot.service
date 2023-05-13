@@ -1,0 +1,10 @@
+[Unit]
+Description=Measured boot service
+
+[Service]
+ExecStart=/usr/local/bin/nvcompcr.sh
+
+[Install]
+WantedBy=multi-user.target
+
+
