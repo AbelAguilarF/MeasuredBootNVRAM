@@ -1,4 +1,4 @@
-# MeasuredBootNVRAM
+# Measured Boot NVRAM
 This is an example of a simple measured boot using a TPM 2.0 (Infineon slb-9670) with a Raspberry Pi 4B.
 El objetivo es usar los hashes de los archivos críticos del sistema 
 y comprobar mediante una politica de PCR en el TPM, que siguen siendo los mismos
