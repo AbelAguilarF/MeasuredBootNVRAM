@@ -61,6 +61,7 @@ delete the secret and the policy
 tpm2_pcrreset 16 23
 rm pcrs.bin
 rm pcr.policy
+rm secret
 ```
 
 Once we have written and prepared the area with the policy.
