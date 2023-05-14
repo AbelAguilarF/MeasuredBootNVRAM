@@ -86,7 +86,12 @@ If everything is correct, the log file will be empty, that means some critical f
 ## Things to keep in mind
 - If we prefer, we can use the sha256 bank, which is more secure than sha1, although for a measured boot it does not usually have much importance.
 
++ In the name of the log we can add the minutes if we want, but the best thing would be to overwrite and even delete the log after reading it so that there is no trace of the secret.
+
++ After changing any of the two scripts, we must redo everything since the hashes will not be the same.
+
 * This simple measured boot is based on the idea of [Ian Oliver](https://github.com/tpm2dev/tpm.dev.tutorials/tree/master/Boot-with-TPM)  who said: "As long as you write something to the TPM during boot, you'll get a Measured Boot". That's what we've intended with this.
+
 
 
 
