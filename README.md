@@ -19,8 +19,8 @@ The output indicates the index of the object's handler.
 
 Donwload the scripts and move it.
 ```
-git clone 
-cd 
+git clone https://github.com/AbelAguilarF/MeasuredBootNVRAM.git
+cd MeasuredBootNVRAM
 sudo cp nvcompcr.sh /usr/local/bin
 sudo chmod +x /usr/local/bin/nvcompcr.sh
 sudo cp nvmboot.service /etc/systemd/system
