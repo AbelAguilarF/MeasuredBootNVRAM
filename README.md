@@ -1,7 +1,7 @@
 # Measured Boot NVRAM
 This is an example of a simple measured boot using a TPM 2.0 (Infineon slb-9670) with a Raspberry Pi 4B.
-El objetivo es usar los hashes de los archivos críticos del sistema 
-y comprobar mediante una politica de PCR en el TPM, que siguen siendo los mismos
+This measured boot uses the PCRs, the NVRAM area, and the PCR policy to ensure that the integrity of critical boot files has not been compromised. If the secret stored in the non-volatile area is revealed in the log, it means that the boot has been successful, on the other hand, if the secret is not recorded in the log, it means that something bad has happened.
+
 
 ## Requirements
 Have configured the TPM on the raspberry and tested with `eltt2`.
@@ -27,16 +27,13 @@ sudo cp nvmboot.service /etc/systemd/system
 sudo mkdir /var/log/mlog
 ```
 
-We generate the hashes in the resettable PCRs 16 and 23 (they are not always the same) 
-using the sha1 bank, 
-then we save them in a pcrs.bin file.
+We generate the hashes in the resettable PCRs 16 and 23 (they are not always the same) using the sha1 bank, then we save them in a pcrs.bin file.
 To do this we run the bash script nvMeasuredBoot.sh.
 ```
 sudo bash nvMeasuredBoot.sh
 ```
 
-Now we need to create the pcr policy for read and write in the area, then we
-define a NV area (index) and finaly write the secret in the area.
+Now we need to create the pcr policy for read and write in the area, then we define a NV area (index) and finaly write the secret in the area.
 ```
 tpm2_createpolicy --policy-pcr -l sha1:16,23 -f pcrs.bin -L pcr.policy
 tpm2_nvdefine 0x01300000 -C o -P tfg  -L pcr.policy -a "policyread|policywrite"
@@ -54,9 +51,7 @@ To remove the area we use `tpm2_nvundefine`.
 tpm2_nvundefine 0x01300000 -P tfg
 ```
 
-We leave it ready for the next boot, for that, we reset the PCRs and 
-delete the secret and the policy 
-(we must do this so as not to leave a trace of what our secret is).
+We leave it ready for the next boot, for that, we reset the PCRs and delete the secret and the policy (we must do this so as not to leave a trace of what our secret is).
 ```
 tpm2_pcrreset 16 23
 rm pcrs.bin
@@ -71,25 +66,29 @@ sudo systemctl enable nvmboot.service
 sudo systemctl start nvmboot.service
 ```
 
-#Testing
+## Testing
 First we reboot the system without changing any critical boot files. 
 If we read the log file created, we have to see the secret.
 ```
-sudo cat /var/log/mlog/mlog_%d-%m-%Y
+sudo cat /var/log/mlog/mlog_ACTUALDATE
 ```
 
-Next, we are going to test what would happen if the PCRs 
-were not equal to the PCRs of the policy.
-We modify the critical /boot/config.txt file either by removing or adding something.
-Then we reboot the system and read the log file. 
+Next, we are going to test what would happen if the PCRs were not equal to the PCRs of the policy.
+We modify the critical /boot/config.txt file either by removing or adding something. Then we reboot the system and read the log file. 
 ```
 sudo nano /boot/config.txt 
 sudo reboot
 ```
 
-If everything is correct, the log 
-file will be empty, that means some critical file has been modified.
+If everything is correct, the log file will be empty, that means some critical file has been modified.
+
 
 ## Things to keep in mind
+- If we prefer, we can use the sha256 bank, which is more secure than sha1, although for a measured boot it does not usually have much importance.
+
+* This simple measured boot is based on the idea of [Ian Oliver](https://github.com/tpm2dev/tpm.dev.tutorials/tree/master/Boot-with-TPM)  who said: "As long as you write something to the TPM during boot, you'll get a Measured Boot". That's what we've intended with this.
+
+
+
 
 
