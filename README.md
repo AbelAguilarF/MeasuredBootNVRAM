@@ -65,7 +65,7 @@ tpm2_nvread 0x01300000 -C 0x01300000 -P pcr:sha1:16,23 -s 768
 
 To remove the area we use `tpm2_nvundefine`.
 ```
-tpm2_nvundefine 0x01300000 -P tfg
+tpm2_nvundefine 0x01300000 -P PASSWORD
 ```
 
 
