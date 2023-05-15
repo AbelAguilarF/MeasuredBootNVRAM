@@ -115,6 +115,7 @@ history -c
 
 * This simple measured boot is based on the idea of [Ian Oliver](https://github.com/tpm2dev/tpm.dev.tutorials/tree/master/Boot-with-TPM)  who said: "As long as you write something to the TPM during boot, you'll get a Measured Boot". That's what we've intended with this.
 
++ You can also build a similar measured boot using the `Quote` function.
 
 
 
