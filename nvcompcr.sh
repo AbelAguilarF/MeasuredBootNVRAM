@@ -23,7 +23,7 @@ tpm2_pcrextend 23:sha1=$configH
 tpm2_pcrextend 23:sha1=$kernelH
 tpm2_pcrextend 23:sha1=$cmdlineH
 
-# Registro con el secreto si se cumple la politica
+# Log is created with the secret if the policy is met.
 fecha=$(date +"%d-%m-%Y")
 mlog="mlog_$fecha"
 touch /var/log/mlog/$mlog
@@ -31,5 +31,5 @@ tpm2_nvread 0x01800000 -C 0x01800000 -P pcr:sha1:16,23 -s 768 > "/var/log/mlog/$
 
 tpm2_pcrreset 16 23
 
-#Limpiamos historial para no dejar rastro de los comandos.
+# The history is cleaned to leave no trace of the commands.
 history -c
