@@ -17,6 +17,7 @@ tpm2_evictcontrol -c o_primary.ctx -P tfg
 ```
 The output indicates the index of the object's handler.
 
+
 Donwload the scripts and move it.
 ```
 git clone https://github.com/AbelAguilarF/MeasuredBootNVRAM.git
@@ -26,6 +27,7 @@ sudo chmod +x /usr/local/bin/nvcompcr.sh
 sudo cp nvmboot.service /etc/systemd/system
 sudo mkdir /var/log/mlog
 ```
+
 
 To increase security, we are going to obfuscate the script. To do this we could first change the name of the script and the service, making it go unnoticed. Then we could use a tool called `shc` (Shell Script Compiler), this tool does not provide absolute protection or encrypt the code, what it does is make it difficult to read the code casually, turning it into an executable binary.
 ```
@@ -37,11 +39,13 @@ sudo mv /usr/local/bin/tpm2_getsession.x /usr/local/bin/tpm2_getsession
 sudo rm /usr/local/bin/tpm2_getsession.x.c
 ```
 
+
 We generate the hashes in the resettable PCRs 16 and 23 (they are not always the same) using the sha1 bank, then we save them in a pcrs.bin file.
 To do this we run the bash script nvMeasuredBoot.sh.
 ```
 sudo bash nvMeasuredBoot.sh
 ```
+
 
 Now we need to create the pcr policy for read and write in the area, then we define a NV area (index) and finaly write the secret in the area.
 ```
@@ -51,15 +55,18 @@ echo "Successful Boot" > secret
 tpm2_nvwrite 0x01300000 -C 0x01300000 -P pcr:sha1:16,23=pcrs.bin -i secret
 ```
 
+
 We make sure that the secret has been saved correctly.
 ```
 tpm2_nvread 0x01300000 -C 0x01300000 -P pcr:sha1:16,23 -s 768
 ```
 
+
 To remove the area we use `tpm2_nvundefine`.
 ```
 tpm2_nvundefine 0x01300000 -P tfg
 ```
+
 
 We leave it ready for the next boot, for that, we reset the PCRs and delete the secret and the policy (we must do this so as not to leave a trace of what our secret is).
 ```
@@ -69,12 +76,14 @@ rm pcr.policy
 rm secret
 ```
 
+
 Once we have written and prepared the area with the policy.
 We are going to proceed to enable the service and start it.
 ```
 sudo systemctl enable fio-daemon.service
 sudo systemctl start fio-daemon.service
 ```
+
 
 ## Testing
 First we reboot the system without changing any critical boot files. 
@@ -102,7 +111,6 @@ history -c
 ```
 
 + After changing any of the two scripts, we must redo everything since the hashes will not be the same.
-
 
 * This simple measured boot is based on the idea of [Ian Oliver](https://github.com/tpm2dev/tpm.dev.tutorials/tree/master/Boot-with-TPM)  who said: "As long as you write something to the TPM during boot, you'll get a Measured Boot". That's what we've intended with this.
 
