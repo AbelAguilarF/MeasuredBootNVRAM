@@ -23,10 +23,6 @@ tpm2_pcrextend 23:sha1=$configH
 tpm2_pcrextend 23:sha1=$kernelH
 tpm2_pcrextend 23:sha1=$cmdlineH
 
-#   Notificaciones
-#export DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS:-unix:path=/run/user/${UID}/bus}"
-#notify-send -u critical -t 200000 'Measured boot' "$(tpm2_nvread 0x01800000 -C 0x01800000 -P pcr:sha1:16,23 -s 768)"
-
 # Registro con el secreto si se cumple la politica
 fecha=$(date +"%d-%m-%Y")
 mlog="mlog_$fecha"
@@ -35,3 +31,5 @@ tpm2_nvread 0x01800000 -C 0x01800000 -P pcr:sha1:16,23 -s 768 > "/var/log/mlog/$
 
 tpm2_pcrreset 16 23
 
+#Limpiamos historial para no dejar rastro de los comandos.
+history -c
