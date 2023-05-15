@@ -24,7 +24,7 @@ tpm2_pcrextend 23:sha1=$kernelH
 tpm2_pcrextend 23:sha1=$cmdlineH
 
 # Log is created with the secret if the policy is met.
-fecha=$(date +"%M-%d-%m-%Y")
+fecha=$(date +"%M-%H-%d-%m-%Y")
 mlog="mlog_$fecha"
 touch /var/log/mlog/$mlog
 tpm2_nvread 0x01800000 -C 0x01800000 -P pcr:sha1:16,23 -s 768 > "/var/log/mlog/$mlog"
