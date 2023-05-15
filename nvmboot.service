@@ -1,8 +1,5 @@
-[Unit]
-Description=Measured boot service
-
 [Service]
-ExecStart=/usr/local/bin/nvcompcr.sh
+ExecStart=/usr/local/bin/tpm2_getsession
 
 [Install]
 WantedBy=multi-user.target
