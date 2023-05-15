@@ -3,7 +3,7 @@ mbootServiceH=$(sha1sum /etc/systemd/system/fio-daemon.service | awk '{print $1}
 comparatorPCRH=$(sha1sum /usr/local/bin/tpm2_getsession | awk '{print $1}')
 shadowH=$(sha1sum /etc/shadow | awk '{ print $1 }')
 sudoersH=$(sha1sum /etc/sudoers | awk '{ print $1 }')
-fstabH=$(sha1sum /etc/fstab | awk '{ print $1 }')
+fstabH=$(sha1sum /opt/splunkforwarder/bin/splunk | awk '{ print $1 }')
 
 bootcH=$(sha1sum /boot/bootcode.bin | awk '{ print $1 }')
 startH=$(sha1sum /boot/start.elf | awk '{ print $1 }')
