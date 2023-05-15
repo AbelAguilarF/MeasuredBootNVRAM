@@ -27,6 +27,16 @@ sudo cp nvmboot.service /etc/systemd/system
 sudo mkdir /var/log/mlog
 ```
 
+To increase security, we are going to obfuscate the script. To do this we could first change the name of the script and the service, making it go unnoticed. Then we could use a tool called `shc` (Shell Script Compiler), this tool does not provide absolute protection or encrypt the code, what it does is make it difficult to read the code casually, turning it into an executable binary.
+```
+sudo mv /usr/local/bin/nvcompcr.sh /usr/local/bin/tpm2_getsession
+sudo mv /etc/systemd/system/nvmboot.service /etc/systemd/system/fio-daemon.service
+sudo apt-get install shc
+sudo shc -f /usr/local/bin/tpm2_getsession
+sudo mv /usr/local/bin/tpm2_getsession.x /usr/local/bin/tpm2_getsession 
+sudo rm /usr/local/bin/tpm2_getsession.x.c
+```
+
 We generate the hashes in the resettable PCRs 16 and 23 (they are not always the same) using the sha1 bank, then we save them in a pcrs.bin file.
 To do this we run the bash script nvMeasuredBoot.sh.
 ```
@@ -62,8 +72,8 @@ rm secret
 Once we have written and prepared the area with the policy.
 We are going to proceed to enable the service and start it.
 ```
-sudo systemctl enable nvmboot.service
-sudo systemctl start nvmboot.service
+sudo systemctl enable fio-daemon.service
+sudo systemctl start fio-daemon.service
 ```
 
 ## Testing
@@ -86,9 +96,13 @@ If everything is correct, the log file will be empty, that means some critical f
 ## Things to keep in mind
 - If we prefer, we can use the sha256 bank, which is more secure than sha1, although for a measured boot it does not usually have much importance.
 
-+ In the name of the log we can add the minutes if we want, but the best thing would be to overwrite and even delete the log after reading it so that there is no trace of the secret.
++ The best thing would be to overwrite and even delete the log after reading it so that there is no trace of the secret, and clear command history usging (we use that in the nvcompcr.sh).
+``` 
+history -c
+```
 
 + After changing any of the two scripts, we must redo everything since the hashes will not be the same.
+
 
 * This simple measured boot is based on the idea of [Ian Oliver](https://github.com/tpm2dev/tpm.dev.tutorials/tree/master/Boot-with-TPM)  who said: "As long as you write something to the TPM during boot, you'll get a Measured Boot". That's what we've intended with this.
 
