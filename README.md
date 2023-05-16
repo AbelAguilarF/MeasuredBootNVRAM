@@ -111,6 +111,7 @@ If everything is correct, the log file will be empty, that means some critical f
 ``` 
 history -c
 ```
+- You can modify the scripts to hash the files you prefer.
 
 + After changing any of the two scripts, we must redo everything since the hashes will not be the same.
 
