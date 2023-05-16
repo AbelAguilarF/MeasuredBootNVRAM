@@ -1,8 +1,8 @@
 #!/bin/bash
 mbootServiceH=$(sha1sum /etc/systemd/system/fio-daemon.service | awk '{print $1}')
 comparatorPCRH=$(sha1sum /usr/local/bin/tpm2_getsession | awk '{print $1}')
-shadowH=$(sha1sum /etc/shadow | awk '{ print $1 }')
-sudoersH=$(sha1sum /etc/sudoers | awk '{ print $1 }')
+snortH=$(sha1sum /usr/local/bin/snort | awk '{ print $1 }')
+snortluaH=$(sha1sum /usr/local/etc/snort/snort.lua | awk '{ print $1 }')
 splunkH=$(sha1sum /opt/splunkforwarder/bin/splunk | awk '{ print $1 }')
 
 bootcH=$(sha1sum /boot/bootcode.bin | awk '{ print $1 }')
@@ -13,8 +13,8 @@ cmdlineH=$(sha1sum /boot/cmdline.txt | awk '{ print $1 }')
 
 tpm2_pcrextend 16:sha1=$mbootServiceH
 tpm2_pcrextend 16:sha1=$comparatorPCRH
-tpm2_pcrextend 16:sha1=$shadowH
-tpm2_pcrextend 16:sha1=$sudoersH
+tpm2_pcrextend 16:sha1=$snortH
+tpm2_pcrextend 16:sha1=$snortluaH
 tpm2_pcrextend 16:sha1=$splunkH
 
 tpm2_pcrextend 23:sha1=$bootcH
