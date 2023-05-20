@@ -116,7 +116,7 @@ history -c
 
 + After changing any of the two scripts, we must redo everything since the hashes will not be the same.
 
-* This simple measured boot is based on the idea of [Ian Oliver](This repository has been made for a Final Degree Project. It is based on the protection of a TPM over a NIDS server (Raspberry) that use Snort3 + Splunk.
+* This simple measured boot is based on the idea of [Ian Oliver](https://github.com/tpm2dev/tpm.dev.tutorials/tree/master/Boot-with-TPM#measured-boot-remarks-by-ian-oliver) that use Snort3 + Splunk.
 )  who said: "As long as you write something to the TPM during boot, you'll get a Measured Boot". That's what we've intended with this.
 
 + You can also build a similar measured boot using the `Quote` function.
