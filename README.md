@@ -1,7 +1,8 @@
 # Measured Boot NVRAM
 This is an example of a simple measured boot using a TPM 2.0 (Infineon slb-9670) with a Raspberry Pi 4B.
 This measured boot uses the PCRs, the NVRAM area, and the PCR policy to ensure that the integrity of critical boot files has not been compromised. If the secret stored in the non-volatile area is revealed in the log, it means that the boot has been successful, on the other hand, if the secret is not recorded in the log, it means that something bad has happened. 
-This repository has been made for a Final Degree Project. It is based on the protection of a NIDS (Raspberry) using Snort3 + Splunk.
+
+This repository has been made for a Final Degree Project. It is based on the protection of a TPM for a NIDS server (Raspberry) using Snort3 + Splunk.
 
 
 ## Requirements
