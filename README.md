@@ -73,10 +73,10 @@ tpm2_nvundefine 0x01300000 -P PASSWORD
 We leave it ready for the next boot, for that, we reset the PCRs and delete the secret and the policy (we must do this so as not to leave a trace of what our secret is).
 ```
 tpm2_pcrreset 16 23
-rm nvMeasuredBoot.sh
-rm pcrs.bin
-rm pcr.policy
-rm secret
+shred -u nvMeasuredBoot.sh
+shred -u pcrs.bin
+shred -u pcr.policy
+shred -u secret
 ```
 
 
